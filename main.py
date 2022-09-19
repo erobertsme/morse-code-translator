@@ -57,5 +57,5 @@ def morse_code_translator(text):
     time.sleep(interval_speed)
 
 while (True):
-  morse_code_translator('Hello World!')
+  morse_code_translator('Hello World')
   time.sleep(interval_speed * 4)
