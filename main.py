@@ -1,9 +1,14 @@
 import machine
 import time
 
-led = machine.Pin('LED', machine.Pin.OUT)
+interval_speed = 0.1
 
-interval_speed = 0.2
+led = machine.Pin('LED', machine.Pin.OUT) # onboard LED
+
+sound = True # this uses a simple buzzer
+buzzer = machine.PWM(machine.Pin(15))
+buzzer.freq(262) # middle C
+volume = 10000 # max volume?
 
 morse_code_translations = {
   'A': '12',
@@ -32,6 +37,7 @@ morse_code_translations = {
   'X': '2112',
   'Y': '2122',
   'Z': '2211',
+  ' ': '0'
 }
 
 def blink(n):
@@ -40,16 +46,26 @@ def blink(n):
   led.off()
   time.sleep(interval_speed)
 
-def blink_char(char_intervals):
-  for interval in char_intervals:
-    blink(interval * interval_speed)
+def beep(n):
+  buzzer.duty_u16(volume)
+  time.sleep(n)
+  buzzer.duty_u16(0)
 
 def translate_char(char):
   return map(lambda str: int(str), morse_code_translations[char])
 
-def morse_code(translation):
-  for char in translation:
-    blink_char(translate_char(char))
+def morse_code(morse_char_str):
+  morse_char_integers = map(lambda str: int(str), morse_code_translations[morse_char_str])
+  for n in morse_char_integers:
+    interval = n * interval_speed
+    if (n == 0):
+      time.sleep(interval * 4)
+      return
+    
+    if (sound == True):
+      beep(interval)
+
+    blink(interval)
 
 def morse_code_translator(text):
   for char in text:
@@ -57,5 +73,5 @@ def morse_code_translator(text):
     time.sleep(interval_speed)
 
 while (True):
-  morse_code_translator('Hello World')
-  time.sleep(interval_speed * 4)
+  morse_code_translator('sos')
+  time.sleep(interval_speed * 8)
