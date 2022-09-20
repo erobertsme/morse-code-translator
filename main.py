@@ -51,9 +51,6 @@ def beep(n):
   time.sleep(n)
   buzzer.duty_u16(0)
 
-def translate_char(char):
-  return map(lambda str: int(str), morse_code_translations[char])
-
 def morse_code(morse_char_str):
   morse_char_integers = map(lambda str: int(str), morse_code_translations[morse_char_str])
 
