@@ -55,15 +55,15 @@ def translate_char(char):
   return map(lambda str: int(str), morse_code_translations[char])
 
 def morse_code(morse_char_str):
-
   morse_char_integers = map(lambda str: int(str), morse_code_translations[morse_char_str])
 
   for n in morse_char_integers:
     interval = n * interval_speed
+
     if (n == 0):
       time.sleep(interval * 4)
       return
-    
+
     if (sound == True):
       beep(interval)
 
